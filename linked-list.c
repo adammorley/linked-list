@@ -38,6 +38,16 @@ void list_addT(list* l, int d) {
     _add(l, d, false);
 }
 
+int list_count(list* l, int d) {
+    node* c = l->h;
+    int i = 0;
+    while (c != NULL) {
+        if (c->d == d) i++;
+        c = c->n;
+    }
+    return i;
+}
+
 bool list_del(list* l, int d) {
     node* c = l->h;
     node* t;
@@ -105,6 +115,33 @@ list* list_new(void) {
     l->h = NULL;
     l->t = NULL;
     return l;
+}
+
+static int _pop(list* l, bool head) {
+    node* n;
+    int d;
+    if (l->h == NULL || l->t == NULL) assert(false);
+    if (head) {
+        n = l->h;
+        l->h = n->n;
+        l->h->p = NULL;
+    }
+    else {
+        n = l->t;
+        l->t = n->p;
+        l->t->n = NULL;
+    }
+    d = n->d;
+    free(n);
+    return d;
+}
+        
+int list_popH(list* l) {
+    return _pop(l, true);
+}
+
+int list_popT(list* l) {
+    return _pop(l, false);
 }
 
 void list_print(list* l) {

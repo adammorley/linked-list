@@ -4,6 +4,19 @@
 
 #include "node.h"
 
+/*
+    other functions to impl:
+
+    insertion at arbitrary location
+    duplicate removal
+    sorting (at insertion or existing)
+    split
+    move node from list 1 > list 2
+    sorted merge (merge two sorted lists)
+    merge sort (recursive divide and conquer)
+    reverse (super easy!)
+*/
+
 typedef struct list list;
 struct list {
     node* h;
@@ -22,6 +35,11 @@ static bool _empty(list* list);
 static void _add(list* list, int d, bool head); // helper
 void list_addH(list* list, int d);
 void list_addT(list* list, int d);
+
+/*
+    count number of occurrences of number
+*/
+int list_count(list* list, int d);
 
 /*
     find any matching elements and delete
@@ -48,6 +66,12 @@ void list_len(list* list);
 */
 list* list_new(void);
 
+/*
+    pop elements
+*/
+static int _pop(list* list, bool head);
+int list_popH(list* list);
+int list_popT(list* list);
 /*
     print elements of list
 */

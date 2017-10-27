@@ -66,11 +66,23 @@ int main(void) {
     assert(list_find(l, 4));
     list_len(l);
     assert(l->len == 4);
+    assert(list_count(l, 1) == 2);
     node* t = l->h;
     while (t->n != NULL) {
         t = t->n;
     }
     assert(t == l->t);
+
+    assert(1 == list_popT(l));
+    list_len(l);
+    assert(l->len == 3);
+    assert(1 == list_popH(l));
+    assert(l->len == 3);
+    list_len(l);
+    assert(l->len == 2);
+
+    // FIXME: add signal handler and catch
+    // assert from _pop with empty list
 
     _list_freeN(l);
     free(l);
