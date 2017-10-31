@@ -5,12 +5,12 @@
 #include "node.h"
 
 int main(void) {
-    node* n0 = new_node(5);
+    node* n0 = node_new(5);
     assert(n0->d == 5);
     assert(n0->n == NULL);
     assert(n0->p == NULL);
 
-    node* n1 = new_node(6);
+    node* n1 = node_new(6);
     n0->n = n1;
     n1->p = n0;
     assert(n0->n == n1);
@@ -18,7 +18,7 @@ int main(void) {
     assert(n0->n->d == 6);
     assert(n1->p->d == 5);
 
-    node* n2 = new_node(7);
+    node* n2 = node_new(7);
     n1->n = n2;
     n2->p = n1;
     assert(n1->n == n2);

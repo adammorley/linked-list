@@ -5,4 +5,4 @@ list-test: list-test.c linked-list.c node.c
 	$(CC) -o list-test linked-list.c list-test.c node.c $(CFLAGS)
 
 node-test: node-test.c node.c
-	$(CC) -o node-test node-test.c node.c $(CFLAGS)
+	$(CC) -g -o node-test node-test.c node.c $(CFLAGS)
