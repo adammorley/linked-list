@@ -5,13 +5,6 @@
 #include "node.h"
 #include "linked-list.h"
 
-static bool _empty(list* l) {
-    if (l->h == NULL && l->t == NULL) {
-        return true;
-    }
-    return false;
-}
-
 static void _add(list* l, int d, bool head) {
     node* n = node_new(d);
     if (_empty(l)) {
@@ -28,8 +21,28 @@ static void _add(list* l, int d, bool head) {
         n->p = l->t;
         l->t = n;
     }
+    _len(l, 1);
 }
-      
+
+static bool _empty(list* l) {
+    if (l->h == NULL && l->t == NULL) {
+        return true;
+    }
+    return false;
+}
+
+static void _len(list* l, int n) {
+    if (n > 0) {
+        __atomic_add_fetch(l->len, n, __ATOMIC_SEQ_CST);
+    }
+    else if (n < 0) {
+        __atomic_add_fetch(l->len, n, __ATOMIC_SEQ_CST);
+    }
+    else {
+        assert(false);
+    }
+}
+
 void list_addH(list* l, int d) {
     _add(l, d, true);
 }
@@ -75,6 +88,7 @@ bool list_del(list* l, int d) {
                 assert(false);
             }
             free(c);
+            _len(l, -1);
             found = true;
         }
         c = t;
@@ -95,25 +109,20 @@ list* list_join(list* l0, list* l1) {
     l0->t->n = l1->h;
     l1->h->p = l0->t;
     l0->t = l1->t;
+    _len(l0, list_len(l1));
     free(l1);
     return l0;
 }
 
-void list_len(list* l) {
-    node* c = l->h;
-    unsigned int i = 0;
-    while (c != NULL) {
-        i++;
-        c = c->n;
-    }
-    //FIXME: mutex?
-    l->len = i;
+unsigned int list_len(list* l) {
+    return __atomic_load_n(l->len, __ATOMIC_SEQ_CST);
 }
 
 list* list_new(void) {
     list* l = malloc(sizeof(list));
     l->h = NULL;
     l->t = NULL;
+    l->len = malloc(sizeof(unsigned int));
     return l;
 }
 
@@ -132,6 +141,7 @@ static int _pop(list* l, bool head) {
         l->t->n = NULL;
     }
     d = n->d;
+    _len(l, -1);
     free(n);
     return d;
 }

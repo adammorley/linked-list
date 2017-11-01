@@ -21,7 +21,7 @@ typedef struct list list;
 struct list {
     node* h;
     node* t;
-    unsigned int len; // lazily updated by call to len
+    unsigned int* len;
 };
 
 /*
@@ -29,6 +29,10 @@ struct list {
 */
 static bool _empty(list* list);
 
+/*
+    handle length management
+*/
+static void _len(list* list, int n);
 /*
     add to the head or tail of the list
 */
@@ -57,9 +61,9 @@ bool list_find(list* list, int d);
 list* list_join(list* l0, list* l1);
 
 /*
-    updates cached list size
+    return current list length
 */
-void list_len(list* list);
+unsigned int list_len(list* list);
 
 /*
     returns ownership

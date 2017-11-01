@@ -3,8 +3,8 @@
 
 typedef struct node node;
 struct node {
-    node* n;
     node* p;
+    node* n;
     int d;
 };
 
