@@ -32,7 +32,7 @@ static bool _empty(list* l) {
 }
 
 static void _len(list* l, long n) {
-    __atomic_add_fetch(&(l->len), n, __ATOMIC_SEQ_CST);
+    __atomic_add_fetch(&l->len, n, __ATOMIC_ACQ_REL);
 }
 
 void list_addH(list* l, long d) {
@@ -107,7 +107,7 @@ list* list_join(list* l0, list* l1) {
 }
 
 unsigned long list_len(list* l) {
-    return __atomic_load_n(&(l->len), __ATOMIC_SEQ_CST);
+    return __atomic_load_n(&l->len, __ATOMIC_ACQUIRE);
 }
 
 list* list_new(void) {
