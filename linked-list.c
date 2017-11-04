@@ -5,6 +5,13 @@
 #include "node.h"
 #include "linked-list.h"
 
+/*
+    static functions
+*/
+static void _add(list* l, long d, bool head);
+static bool _empty(list* l);
+static void _len(list* l, long n);
+
 static void _add(list* l, long d, bool head) {
     node* n = node_new(d);
     if (_empty(l)) {

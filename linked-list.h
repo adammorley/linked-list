@@ -25,18 +25,8 @@ struct list {
 };
 
 /*
-    helper: is list free?
-*/
-static bool _empty(list* list);
-
-/*
-    handle length management
-*/
-static void _len(list* list, long n);
-/*
     add to the head or tail of the list
 */
-static void _add(list* list, long d, bool head); // helper
 void list_addH(list* list, long d);
 void list_addT(list* list, long d);
 
@@ -73,9 +63,9 @@ list* list_new(void);
 /*
     pop elements
 */
-static long _pop(list* list, bool head);
 long list_popH(list* list);
 long list_popT(list* list);
+
 /*
     print elements of list
 */
