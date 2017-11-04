@@ -32,7 +32,7 @@ static bool _empty(list* l) {
 }
 
 static void _len(list* l, long n) {
-    __atomic_add_fetch(&l->len, n, __ATOMIC_ACQ_REL);
+    __atomic_add_fetch(&l->len, n, __ATOMIC_RELEASE);
 }
 
 void list_addH(list* l, long d) {
