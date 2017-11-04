@@ -11,6 +11,7 @@
 static void _add(list* l, long d, bool head);
 static bool _empty(list* l);
 static void _len(list* l, long n);
+static long _pop(list* l, bool head);
 
 static void _add(list* l, long d, bool head) {
     node* n = node_new(d);
@@ -42,6 +43,26 @@ static void _len(list* l, long n) {
     __atomic_add_fetch(&l->len, n, __ATOMIC_RELEASE);
 }
 
+static long _pop(list* l, bool head) {
+    node* n;
+    long d;
+    if (l->h == NULL || l->t == NULL) assert(false);
+    if (head) {
+        n = l->h;
+        l->h = n->n;
+        l->h->p = NULL;
+    }
+    else {
+        n = l->t;
+        l->t = n->p;
+        l->t->n = NULL;
+    }
+    d = n->d;
+    _len(l, -1);
+    free(n);
+    return d;
+}
+ 
 void list_addH(list* l, long d) {
     _add(l, d, true);
 }
@@ -125,26 +146,7 @@ list* list_new(void) {
     return l;
 }
 
-static long _pop(list* l, bool head) {
-    node* n;
-    long d;
-    if (l->h == NULL || l->t == NULL) assert(false);
-    if (head) {
-        n = l->h;
-        l->h = n->n;
-        l->h->p = NULL;
-    }
-    else {
-        n = l->t;
-        l->t = n->p;
-        l->t->n = NULL;
-    }
-    d = n->d;
-    _len(l, -1);
-    free(n);
-    return d;
-}
-        
+       
 long list_popH(list* l) {
     return _pop(l, true);
 }
