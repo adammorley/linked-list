@@ -9,6 +9,7 @@ int main(void) {
     list* l = list_new();
     assert(l->h == NULL);
     assert(l->t == NULL);
+    assert(sizeof(list) == sizeof(l->h) + sizeof(l->t) + sizeof(l->len));
 
     list_addH(l, 1);
     assert(list_find(l, 1));

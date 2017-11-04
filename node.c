@@ -2,7 +2,7 @@
 #include "node.h"
 
 // returns ownership
-node* node_new(int d) {
+node* node_new(long d) {
     node* n = malloc(sizeof(node));
     n->n = NULL;
     n->p = NULL;

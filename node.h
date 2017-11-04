@@ -5,12 +5,12 @@ typedef struct node node;
 struct node {
     node* p;
     node* n;
-    int d;
+    long d;
 };
 
 /*
     creates and returns a node, returns ownership
 */
-node* node_new(int d);
+node* node_new(long d);
 
 #endif //NODE_H

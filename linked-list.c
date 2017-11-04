@@ -5,7 +5,7 @@
 #include "node.h"
 #include "linked-list.h"
 
-static void _add(list* l, int d, bool head) {
+static void _add(list* l, long d, bool head) {
     node* n = node_new(d);
     if (_empty(l)) {
         l->h = n;
@@ -31,29 +31,21 @@ static bool _empty(list* l) {
     return false;
 }
 
-static void _len(list* l, int n) {
-    if (n > 0) {
-        __atomic_add_fetch(l->len, n, __ATOMIC_SEQ_CST);
-    }
-    else if (n < 0) {
-        __atomic_add_fetch(l->len, n, __ATOMIC_SEQ_CST);
-    }
-    else {
-        assert(false);
-    }
+static void _len(list* l, long n) {
+    __atomic_add_fetch(&(l->len), n, __ATOMIC_SEQ_CST);
 }
 
-void list_addH(list* l, int d) {
+void list_addH(list* l, long d) {
     _add(l, d, true);
 }
 
-void list_addT(list* l, int d) {
+void list_addT(list* l, long d) {
     _add(l, d, false);
 }
 
-int list_count(list* l, int d) {
+long list_count(list* l, long d) {
     node* c = l->h;
-    int i = 0;
+    long i = 0;
     while (c != NULL) {
         if (c->d == d) i++;
         c = c->n;
@@ -61,7 +53,7 @@ int list_count(list* l, int d) {
     return i;
 }
 
-bool list_del(list* l, int d) {
+bool list_del(list* l, long d) {
     node* c = l->h;
     node* t;
     bool found = false;
@@ -96,7 +88,7 @@ bool list_del(list* l, int d) {
     return found;
 }
 
-bool list_find(list* l, int d) {
+bool list_find(list* l, long d) {
     node* c = l->h;
     while (c != NULL) {
         if (c->d == d) return true;
@@ -114,21 +106,21 @@ list* list_join(list* l0, list* l1) {
     return l0;
 }
 
-unsigned int list_len(list* l) {
-    return __atomic_load_n(l->len, __ATOMIC_SEQ_CST);
+unsigned long list_len(list* l) {
+    return __atomic_load_n(&(l->len), __ATOMIC_SEQ_CST);
 }
 
 list* list_new(void) {
     list* l = malloc(sizeof(list));
     l->h = NULL;
     l->t = NULL;
-    l->len = malloc(sizeof(unsigned int));
+    l->len = 0;
     return l;
 }
 
-static int _pop(list* l, bool head) {
+static long _pop(list* l, bool head) {
     node* n;
-    int d;
+    long d;
     if (l->h == NULL || l->t == NULL) assert(false);
     if (head) {
         n = l->h;
@@ -146,11 +138,11 @@ static int _pop(list* l, bool head) {
     return d;
 }
         
-int list_popH(list* l) {
+long list_popH(list* l) {
     return _pop(l, true);
 }
 
-int list_popT(list* l) {
+long list_popT(list* l) {
     return _pop(l, false);
 }
 

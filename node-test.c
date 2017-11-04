@@ -6,6 +6,7 @@
 
 int main(void) {
     node* n0 = node_new(5);
+    assert(sizeof(node) == sizeof(n0->p) + sizeof(n0->n) + sizeof(n0->d));
     assert(n0->d == 5);
     assert(n0->n == NULL);
     assert(n0->p == NULL);

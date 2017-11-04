@@ -21,7 +21,7 @@ typedef struct list list;
 struct list {
     node* h;
     node* t;
-    unsigned int* len;
+    unsigned long len;
 };
 
 /*
@@ -32,28 +32,28 @@ static bool _empty(list* list);
 /*
     handle length management
 */
-static void _len(list* list, int n);
+static void _len(list* list, long n);
 /*
     add to the head or tail of the list
 */
-static void _add(list* list, int d, bool head); // helper
-void list_addH(list* list, int d);
-void list_addT(list* list, int d);
+static void _add(list* list, long d, bool head); // helper
+void list_addH(list* list, long d);
+void list_addT(list* list, long d);
 
 /*
     count number of occurrences of number
 */
-int list_count(list* list, int d);
+long list_count(list* list, long d);
 
 /*
     find any matching elements and delete
 */
-bool list_del(list* list, int d);
+bool list_del(list* list, long d);
 
 /*
     returns true if found in list
 */
-bool list_find(list* list, int d);
+bool list_find(list* list, long d);
 
 /*
     joins l0 w/ l1, frees l1, returns combined list
@@ -63,7 +63,7 @@ list* list_join(list* l0, list* l1);
 /*
     return current list length
 */
-unsigned int list_len(list* list);
+unsigned long list_len(list* list);
 
 /*
     returns ownership
@@ -73,9 +73,9 @@ list* list_new(void);
 /*
     pop elements
 */
-static int _pop(list* list, bool head);
-int list_popH(list* list);
-int list_popT(list* list);
+static long _pop(list* list, bool head);
+long list_popH(list* list);
+long list_popT(list* list);
 /*
     print elements of list
 */
