@@ -166,6 +166,14 @@ void list_print(list* l) {
     }
 }
 
+void list_replace(list* l, long d) {
+    node* c = l->h;
+    while (c != NULL) {
+        c->d = d;
+        c = c->n;
+    }
+}
+
 void _list_freeN(list* l) {
     node* c = l->t;
     while (c != l->h) {

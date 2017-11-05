@@ -71,6 +71,8 @@ long list_popT(list* list);
 */
 void list_print(list* list);
 
+void list_replace(list* list, long d);
+
 /*
     helper: free nodes in list
 */
