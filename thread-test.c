@@ -6,15 +6,6 @@
 
 #include "linked-list.h"
 
-/*
-    want to have multiple threads:
-        one which adds items
-        one which counts
-        one which deletes
-        one which replaces
-        then there has to be a validator thread
-*/
-
 struct t_args {
     list* l;
 };
@@ -47,7 +38,7 @@ void* test_delete(void* args) {
     while(true) {
         found = list_find(l, 17);
         usleep(10);
-        if (count++ > 100) break;
+        if (count++ > 100 || !found) break;
     }
     assert(!found);
 }
