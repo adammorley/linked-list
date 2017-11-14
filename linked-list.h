@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 #include "node.h"
+#include "../mutex/mutex.h"
 
 /*
     other functions to impl:
@@ -22,6 +23,7 @@ struct list {
     node* h;
     node* t;
     unsigned long len;
+    mutex* m;
 };
 
 /*

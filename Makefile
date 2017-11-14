@@ -1,16 +1,19 @@
 CC=/usr/local/Cellar/gcc/7.2.0/bin/gcc-7
 CFLAGS=-I. -g
 
-all: list-test node-test perf-test
+all: list-test node-test thread-test perf-test
 
 clean:
 	rm -f node-test list-test perf-test *.o
 
-list-test: list-test.c linked-list.c node.c
-	$(CC) -o list-test linked-list.c list-test.c node.c $(CFLAGS)
-
 node-test: node-test.c node.c
 	$(CC) -o node-test node-test.c node.c $(CFLAGS)
 
-perf-test: perf-test.c node.c linked-list.c
-	$(CC) -o perf-test perf-test.c linked-list.c node.c $(CFLAGS)
+list-test: list-test.c linked-list.c node.c ../mutex/mutex.c
+	$(CC) -o list-test linked-list.c list-test.c ../mutex/mutex.c node.c $(CFLAGS)
+
+thread-test: thread-test.c node.c linked-list.c ../mutex/mutex.c
+	$(CC) -o thread-test thread-test.c linked-list.c ../mutex/mutex.c node.c $(CFLAGS)
+
+perf-test: perf-test.c node.c linked-list.c ../mutex/mutex.c
+	$(CC) -o perf-test perf-test.c linked-list.c ../mutex/mutex.c node.c $(CFLAGS)

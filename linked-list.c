@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "node.h"
 #include "linked-list.h"
+#include "../mutex/mutex.h"
 
 /*
     static functions
@@ -15,6 +16,7 @@ static long _pop(list* l, bool head);
 
 static void _add(list* l, long d, bool head) {
     node* n = node_new(d);
+    mutex_lock(l->m);
     if (_empty(l)) {
         l->h = n;
         l->t = n;
@@ -30,9 +32,11 @@ static void _add(list* l, long d, bool head) {
         l->t = n;
     }
     _len(l, 1);
+    mutex_unlock(l->m);
 }
 
 static bool _empty(list* l) {
+    assert(mutex_islocked(l->m));
     if (l->h == NULL && l->t == NULL) {
         return true;
     }
@@ -46,6 +50,7 @@ static void _len(list* l, long n) {
 static long _pop(list* l, bool head) {
     node* n;
     long d;
+    mutex_lock(l->m);
     if (l->h == NULL || l->t == NULL) assert(false);
     if (head) {
         n = l->h;
@@ -59,6 +64,7 @@ static long _pop(list* l, bool head) {
     }
     d = n->d;
     _len(l, -1);
+    mutex_unlock(l->m);
     free(n);
     return d;
 }
@@ -82,9 +88,10 @@ long list_count(list* l, long d) {
 }
 
 bool list_del(list* l, long d) {
-    node* c = l->h;
     node* t;
     bool found = false;
+    mutex_lock(l->m);
+    node* c = l->h;
     while (c != NULL) {
         t = c->n;
         if (c->d == d) {
@@ -113,6 +120,7 @@ bool list_del(list* l, long d) {
         }
         c = t;
     }
+    mutex_unlock(l->m);
     return found;
 }
 
@@ -125,6 +133,8 @@ bool list_find(list* l, long d) {
     return false;
 }
 
+/* TODO: add locking */
+/* note: need deadlock detection to acquire in correct order */
 list* list_join(list* l0, list* l1) {
     l0->t->n = l1->h;
     l1->h->p = l0->t;
@@ -143,6 +153,7 @@ list* list_new(void) {
     l->h = NULL;
     l->t = NULL;
     l->len = 0;
+    l->m = mutex_create();
     return l;
 }
 
@@ -167,18 +178,22 @@ void list_print(list* l) {
 }
 
 void list_replace(list* l, long d) {
+    mutex_lock(l->m);
     node* c = l->h;
     while (c != NULL) {
         c->d = d;
         c = c->n;
     }
+    mutex_unlock(l->m);
 }
 
 void _list_freeN(list* l) {
+    mutex_lock(l->m);
     node* c = l->t;
     while (c != l->h) {
         c = c->p;
         free(c->n);
     }
     free(c);
+    mutex_unlock(l->m);
 }
