@@ -133,15 +133,15 @@ bool list_find(list* l, long d) {
     return false;
 }
 
-/* TODO: add locking */
-/* note: need deadlock detection to acquire in correct order */
-list* list_join(list* l0, list* l1) {
+bool list_join(list* l0, list* l1) {
+    if (!mutex_lock2(l0->m, l1->m)) return false;
     l0->t->n = l1->h;
     l1->h->p = l0->t;
     l0->t = l1->t;
     _len(l0, list_len(l1));
     free(l1);
-    return l0;
+    mutex_unlock(l0->m);
+    return true;
 }
 
 unsigned long list_len(list* l) {

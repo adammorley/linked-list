@@ -8,11 +8,7 @@
 /*
     other functions to impl:
 
-    insertion at arbitrary location
-    move node from list 1 > list 2
-    sorted merge (merge two sorted lists)
     merge sort (recursive divide and conquer)
-    reverse (super easy!)
 */
 
 typedef struct list list;
@@ -45,9 +41,10 @@ bool list_del(list* list, long d);
 bool list_find(list* list, long d);
 
 /*
-    joins l0 w/ l1, frees l1, returns combined list
+    joins l0 w/ l1, frees l1, l0 contains combination
+    returns false if mutex not lockable (can re-drive)
 */
-list* list_join(list* l0, list* l1);
+bool list_join(list* l0, list* l1);
 
 /*
     return current list length
@@ -70,6 +67,9 @@ long list_popT(list* list);
 */
 void list_print(list* list);
 
+/*
+    replace all elements in list with d
+*/
 void list_replace(list* list, long d);
 
 /*

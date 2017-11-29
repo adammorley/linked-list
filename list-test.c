@@ -55,7 +55,7 @@ int main(void) {
     assert(list_find(l1, 2));
     assert(list_len(l) == 2);
 
-    l = list_join(l, l1);
+    assert(list_join(l, l1));
     assert(list_find(l, 1));
     assert(list_find(l, 2));
     assert(!list_find(l, 3));
