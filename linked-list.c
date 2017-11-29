@@ -16,7 +16,7 @@ static long _pop(list* l, bool head);
 
 static void _add(list* l, long d, bool head) {
     node* n = node_new(d);
-    mutex_lock(l->m);
+    mutex_spinlock(l->m);
     if (_empty(l)) {
         l->h = n;
         l->t = n;
@@ -50,7 +50,7 @@ static void _len(list* l, long n) {
 static long _pop(list* l, bool head) {
     node* n;
     long d;
-    mutex_lock(l->m);
+    mutex_spinlock(l->m);
     if (l->h == NULL || l->t == NULL) assert(false);
     if (head) {
         n = l->h;
@@ -90,7 +90,7 @@ long list_count(list* l, long d) {
 bool list_del(list* l, long d) {
     node* t;
     bool found = false;
-    mutex_lock(l->m);
+    mutex_spinlock(l->m);
     node* c = l->h;
     while (c != NULL) {
         t = c->n;
@@ -178,7 +178,7 @@ void list_print(list* l) {
 }
 
 void list_replace(list* l, long d) {
-    mutex_lock(l->m);
+    mutex_spinlock(l->m);
     node* c = l->h;
     while (c != NULL) {
         c->d = d;
@@ -188,7 +188,7 @@ void list_replace(list* l, long d) {
 }
 
 void _list_freeN(list* l) {
-    mutex_lock(l->m);
+    mutex_spinlock(l->m);
     node* c = l->t;
     while (c != l->h) {
         c = c->p;

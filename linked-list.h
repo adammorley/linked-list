@@ -9,9 +9,6 @@
     other functions to impl:
 
     insertion at arbitrary location
-    duplicate removal
-    sorting (at insertion or existing)
-    split
     move node from list 1 > list 2
     sorted merge (merge two sorted lists)
     merge sort (recursive divide and conquer)
