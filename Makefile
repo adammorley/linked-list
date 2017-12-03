@@ -1,13 +1,13 @@
 CC=/usr/local/Cellar/llvm/5.0.0/bin/clang
 CFLAGS=-I. -g
 
-all: list-test thread-test perf-test
+all: test thread-test perf-test
 
 clean:
-	rm -f list-test perf-test *.o
+	rm -f test perf-test *.o
 
-list-test: list-test.c linked-list.c ../mutex/mutex.c ../node/node.c
-	$(CC) -o list-test linked-list.c list-test.c ../mutex/mutex.c ../node/node.c $(CFLAGS)
+test: test.c linked-list.c ../mutex/mutex.c ../node/node.c
+	$(CC) -o test linked-list.c test.c ../mutex/mutex.c ../node/node.c $(CFLAGS)
 
 thread-test: thread-test.c linked-list.c ../mutex/mutex.c ../node/node.c
 	$(CC) -o thread-test thread-test.c linked-list.c ../mutex/mutex.c ../node/node.c $(CFLAGS)

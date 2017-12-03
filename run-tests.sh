@@ -2,7 +2,7 @@
 
 make clean
 make all
-./list-test && \
+./test && \
     ./thread-test && \
     ./perf-test && \
     echo 'ok'
