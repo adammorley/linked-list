@@ -150,6 +150,7 @@ unsigned long list_len(list* l) {
 
 list* list_new(void) {
     list* l = malloc(sizeof(list));
+    if (l == NULL) assert(true);
     l->h = NULL;
     l->t = NULL;
     l->len = 0;

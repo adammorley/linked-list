@@ -5,12 +5,6 @@
 #include "node.h"
 #include "../mutex/mutex.h"
 
-/*
-    other functions to impl:
-
-    merge sort (recursive divide and conquer)
-*/
-
 typedef struct list list;
 struct list {
     node* h;
