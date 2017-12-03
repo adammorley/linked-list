@@ -2,8 +2,8 @@
 #define LINKED_LIST_H
 #include <stdbool.h>
 
-#include "node.h"
 #include "../mutex/mutex.h"
+#include "../node/node.h"
 
 typedef struct list list;
 struct list {

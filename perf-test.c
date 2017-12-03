@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "../node/node.h"
 #include "linked-list.h"
-#include "node.h"
 
 #define ns_to_s pow(10, -9)
 

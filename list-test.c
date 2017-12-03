@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "node.h"
-#include "linked-list.h"
 #include "../mutex/mutex.h"
+#include "../node/node.h"
+#include "linked-list.h"
 
 int main(void) {
     list* l = list_new();
@@ -63,8 +63,8 @@ int main(void) {
     assert(list_len(l) == 4);
     assert(list_count(l, 1) == 2);
     node* t = l->h;
-    while (t->n != NULL) {
-        t = t->n;
+    while (t->r != NULL) {
+        t = t->r;
     }
     assert(t == l->t);
 
