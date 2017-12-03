@@ -14,12 +14,14 @@ void* populate_data(void* args) {
     struct t_args* arg = (struct t_args*) args;
     list* l = arg->l;
     for (long i = 0; i <= 30; i++) list_addH(l, i);
+    return NULL;
 }
 
 void* find_data(void* args) {
     struct t_args* arg = (struct t_args*) args;
     list* l = arg->l;
     for (long i = 30; i >= 0; i--) assert(list_find(l, i));
+    return NULL;
 }
 
 void* delete_data(void* args) {
@@ -27,6 +29,7 @@ void* delete_data(void* args) {
     list* l = arg->l;
     usleep(50);
     list_del(l, 17);
+    return NULL;
 }
 
 void* test_delete(void* args) {
@@ -41,6 +44,7 @@ void* test_delete(void* args) {
         if (count++ > 100 || !found) break;
     }
     assert(!found);
+    return NULL;
 }
 
 int main(void) {

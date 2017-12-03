@@ -1,4 +1,4 @@
-CC=/usr/local/Cellar/gcc/7.2.0/bin/gcc-7
+CC=/usr/local/Cellar/llvm/5.0.0/bin/clang
 CFLAGS=-I. -g
 
 all: list-test node-test thread-test perf-test

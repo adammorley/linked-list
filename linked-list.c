@@ -169,11 +169,11 @@ long list_popT(list* l) {
 
 void list_print(list* l) {
     node* c = l->h;
-    printf("h: %d t: %d\n",
-            l->h, l->t);
+    printf("h: %li t: %li\n",
+            (long) l->h, (long) l->t);
     while (c != NULL) {
-        printf("p: %d c: %d n: %d d: %d\n",
-                c->p, c,    c->n, c->d);
+        printf("p: %li c: %li n: %li d: %li\n",
+                (long) c->p, (long) c, (long) c->n, c->d);
         c = c->n;
     }
 }
