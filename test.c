@@ -80,6 +80,7 @@ int main(void) {
     // assert from _pop with empty list
 
     _list_freeN(l);
+    free(l->m);
     free(l);
     return 0;
 }

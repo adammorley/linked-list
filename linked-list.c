@@ -139,6 +139,7 @@ bool list_join(list* l0, list* l1) {
     l1->h->l = l0->t;
     l0->t = l1->t;
     _len(l0, list_len(l1));
+    free(l1->m);
     free(l1);
     mutex_unlock(l0->m);
     return true;
