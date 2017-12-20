@@ -63,8 +63,8 @@ int main(void) {
     assert(list_len(l) == 4);
     assert(list_count(l, 1) == 2);
     node* t = l->h;
-    while (t->r != NULL) {
-        t = t->r;
+    while (t->n != NULL) {
+        t = t->n;
     }
     assert(t == l->t);
 

@@ -22,13 +22,13 @@ static void _add(list* l, long d, bool head) {
         l->t = n;
     }
     else if (head) {
-        l->h->l = n;
-        n->r = l->h;
+        l->h->p = n;
+        n->n = l->h;
         l->h= n;
     }
     else {
-        l->t->r = n;
-        n->l = l->t;
+        l->t->n = n;
+        n->p = l->t;
         l->t = n;
     }
     _len(l, 1);
@@ -54,13 +54,13 @@ static long _pop(list* l, bool head) {
     if (l->h == NULL || l->t == NULL) assert(false);
     if (head) {
         n = l->h;
-        l->h = n->r;
-        l->h->l = NULL;
+        l->h = n->n;
+        l->h->p = NULL;
     }
     else {
         n = l->t;
-        l->t = n->l;
-        l->t->r = NULL;
+        l->t = n->p;
+        l->t->n = NULL;
     }
     d = n->d;
     _len(l, -1);
@@ -82,7 +82,7 @@ long list_count(list* l, long d) {
     long i = 0;
     while (c != NULL) {
         if (c->d == d) i++;
-        c = c->r;
+        c = c->n;
     }
     return i;
 }
@@ -93,21 +93,21 @@ bool list_del(list* l, long d) {
     mutex_spinlock(l->m);
     node* c = l->h;
     while (c != NULL) {
-        t = c->r;
+        t = c->n;
         if (c->d == d) {
-            if (c->l != NULL && c->r != NULL) { // mid-list
-                c->l->r = c->r;
-                c->r->l = c->l;
+            if (c->p != NULL && c->n != NULL) { // mid-list
+                c->p->n = c->n;
+                c->n->p = c->p;
             }
-            else if (c->r == NULL && c->l != NULL) { // last element
-                c->l->r = NULL;
-                l->t = c->l;
+            else if (c->n == NULL && c->p != NULL) { // last element
+                c->p->n = NULL;
+                l->t = c->p;
             }
-            else if (c->r != NULL && c->l == NULL ) { // first element
-                c->r->l = NULL;
-                l->h = c->r;
+            else if (c->n != NULL && c->p == NULL ) { // first element
+                c->n->p = NULL;
+                l->h = c->n;
             }
-            else if (c->r == NULL && c->l == NULL) { // list has one element
+            else if (c->n == NULL && c->p == NULL) { // list has one element
                 l->h = NULL;
                 l->t = NULL;
             }
@@ -128,15 +128,15 @@ bool list_find(list* l, long d) {
     node* c = l->h;
     while (c != NULL) {
         if (c->d == d) return true;
-        c = c->r;
+        c = c->n;
     }
     return false;
 }
 
 bool list_join(list* l0, list* l1) {
     if (!mutex_lock2(l0->m, l1->m)) return false;
-    l0->t->r = l1->h;
-    l1->h->l = l0->t;
+    l0->t->n = l1->h;
+    l1->h->p = l0->t;
     l0->t = l1->t;
     _len(l0, list_len(l1));
     free(l1->m);
@@ -174,8 +174,8 @@ void list_print(list* l) {
             (long) l->h, (long) l->t);
     while (c != NULL) {
         printf("p: %li c: %li n: %li d: %li\n",
-                (long) c->l, (long) c, (long) c->r, c->d);
-        c = c->r;
+                (long) c->p, (long) c, (long) c->n, c->d);
+        c = c->n;
     }
 }
 
@@ -184,7 +184,7 @@ void list_replace(list* l, long d) {
     node* c = l->h;
     while (c != NULL) {
         c->d = d;
-        c = c->r;
+        c = c->n;
     }
     mutex_unlock(l->m);
 }
@@ -193,8 +193,8 @@ void _list_freeN(list* l) {
     mutex_spinlock(l->m);
     node* c = l->t;
     while (c != l->h) {
-        c = c->l;
-        free(c->r);
+        c = c->p;
+        free(c->n);
     }
     free(c);
     mutex_unlock(l->m);
