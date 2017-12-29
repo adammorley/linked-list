@@ -67,6 +67,14 @@ void list_print(list* list);
 void list_replace(list* list, long d);
 
 /*
+    sort the list.  this returns a new list
+    destroys old list
+    note that locks are not held for the duration.
+    this could be easily fixed
+*/
+list* list_sort(list* list);
+
+/*
     helper: free nodes in list
 */
 void _list_freeN(list* l);

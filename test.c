@@ -4,9 +4,14 @@
 
 #include "../mutex/mutex.h"
 #include "../node/node.h"
+#include "../queue/queue.h"
+#include "../tree-node/tree_node.h"
+#include "../binary-tree/tree.h"
+
 #include "linked-list.h"
 
-int main(void) {
+void test_simple() {
+    printf("running simple linked list tests\n");
     list* l = list_new();
     assert(l->h == NULL);
     assert(l->t == NULL);
@@ -82,5 +87,36 @@ int main(void) {
     _list_freeN(l);
     free(l->m);
     free(l);
+}
+
+void test_pop() {
+    printf("running pop tests\n");
+    list* l = list_new();
+    list_addH(l, 1);
+    list_addH(l, 2);
+    list_addH(l, 3);
+    assert(list_popT(l) == 1);
+    assert(list_popH(l) == 3);
+    assert(list_popH(l) == 2);
+}
+
+void test_sort() {
+    printf("running sort test\n");
+    list* l = list_new();
+    list_addH(l, 1);
+    list_addH(l, 2);
+    list_addH(l, 2);
+    list_addH(l, 4);
+    list_addH(l, 3);
+    list* ln = list_sort(l);
+}
+
+int main(void) {
+    test_simple();
+
+    test_pop();
+
+    test_sort();
+
     return 0;
 }

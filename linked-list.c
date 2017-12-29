@@ -2,8 +2,14 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "../log/log.h"
 #include "../mutex/mutex.h"
 #include "../node/node.h"
+#include "../queue/queue.h"
+#include "../tree-node/tree_node.h"
+#include "../binary-tree/tree.h"
+
 #include "linked-list.h"
 
 /*
@@ -55,12 +61,12 @@ static long _pop(list* l, bool head) {
     if (head) {
         n = l->h;
         l->h = n->n;
-        l->h->p = NULL;
+        if (l->h != NULL) l->h->p = NULL;
     }
     else {
         n = l->t;
         l->t = n->p;
-        l->t->n = NULL;
+        if (l->t != NULL) l->t->n = NULL;
     }
     d = n->d;
     _len(l, -1);
@@ -170,8 +176,8 @@ long list_popT(list* l) {
 
 void list_print(list* l) {
     node* c = l->h;
-    printf("h: %li t: %li\n",
-            (long) l->h, (long) l->t);
+    printf("h: %li t: %li l: %lu\n",
+            (long) l->h, (long) l->t, list_len(l));
     while (c != NULL) {
         printf("p: %li c: %li n: %li d: %li\n",
                 (long) c->p, (long) c, (long) c->n, c->d);
@@ -187,6 +193,36 @@ void list_replace(list* l, long d) {
         c = c->n;
     }
     mutex_unlock(l->m);
+}
+
+/*
+    speed up options:
+        - re-use the list elements (there will be the same number)
+        - eliminate the use of the queue (details in the tree node impl)
+*/
+list* list_sort(list* l) {
+    tree* t = tree_new();
+    queue* q = queue_new();
+    long d;
+    unsigned long len = list_len(l);
+    while (true) {
+        if (list_len(l) == 0) break;
+        d = list_popH(l);
+        tree_insert(t, d);
+    }
+    tree_inorder(t, q);
+    list* ln = list_new();
+    tree_node* p;
+    while (true) {
+        p = (tree_node*) q_dequeue(q);
+        if (p == NULL) break;
+        for (unsigned int i = 1; i <= p->c; i++) {
+            list_addT(ln, p->d);
+        }
+    }
+    Assert(len == list_len(ln), __func__, "lists not same length");
+    free(l);
+    return ln;
 }
 
 void _list_freeN(list* l) {
