@@ -130,6 +130,29 @@ bool list_del(list* l, long d) {
     return found;
 }
 
+void list_del_dup(list* l) {
+    mutex_spinlock(l->m);
+    if (l->h == NULL) return;
+    node* c = l->h;
+    while (c != NULL) {
+        node* t = c->n;
+        while (t != NULL) {
+            if (t->d == c->d) {
+                node* x = t->n;
+                if (t->n) t->n->p = t->p;
+                if (t->p) t->p->n = t->n;
+                t = x;
+                _len(l, -1);
+            } else {
+                t = t->n;
+            }
+        }
+        c = c->n;
+    }
+    mutex_unlock(l->m);
+}
+        
+
 bool list_find(list* l, long d) {
     node* c = l->h;
     while (c != NULL) {

@@ -111,12 +111,28 @@ void test_sort() {
     list* ln = list_sort(l);
 }
 
+void test_del_dup() {
+    printf("testing duplicate deletion\n");
+    list* l = list_new();
+    list_addT(l, 1);
+    list_addT(l, 2);
+    list_addT(l, 3);
+    list_addT(l, 1);
+    list_addT(l, 3);
+    list_del_dup(l);
+    assert(list_popH(l) == 1);
+    assert(list_popH(l) == 2);
+    assert(list_popH(l) == 3);
+}
+
 int main(void) {
     test_simple();
 
     test_pop();
 
     test_sort();
+    
+    test_del_dup();
 
     return 0;
 }

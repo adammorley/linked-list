@@ -30,6 +30,11 @@ long list_count(list* list, long d);
 bool list_del(list* list, long d);
 
 /*
+    delete duplicate elements
+*/
+void list_del_dup(list* list);
+
+/*
     returns true if found in list
 */
 bool list_find(list* list, long d);
