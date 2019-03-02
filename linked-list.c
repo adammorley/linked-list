@@ -12,7 +12,6 @@
 
 #include "linked-list.h"
 
-// FIXME: timeout spinlock
 /*
     static functions
 */
