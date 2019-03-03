@@ -225,7 +225,6 @@ void list_replace(list* l, long d) {
 */
 list* list_sort(list* l) {
     tree* t = tree_new();
-    queue* q = queue_new();
     long d;
     unsigned long len = list_len(l);
     while (true) {
@@ -233,7 +232,7 @@ list* list_sort(list* l) {
         d = list_popH(l);
         tree_insert(t, d);
     }
-    tree_inorder(t, q);
+    queue* q = tree_inorder(t);
     list* ln = list_new();
     tree_node* p;
     while (true) {
