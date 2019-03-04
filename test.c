@@ -81,9 +81,6 @@ void test_simple() {
     list_replace(l, 66);
     assert(list_count(l, 66) == list_len(l));
 
-    // FIXME: add signal handler and catch
-    // assert from _pop with empty list
-
     _list_freeN(l);
     free(l->m);
     free(l);
